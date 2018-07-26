@@ -4,7 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!-- ======================================== 配置数据源 ========================================= -->
     <bean id="ds" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
         <property name="url" value="jdbc:mysql://127.0.0.1/lqfsys?useSSL=false&amp;serverTimezone=GMT&amp;nullCatalogMeansCurrent=true"></property>
@@ -14,7 +13,6 @@
         <property name="filters" value="stat" />
     </bean>
 
-    <!-- ======================================== 配置MyBatis的SqlSessionFactory ========================================= -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="ds"></property>
         <!-- 自动扫描mappers.xml文件 -->
@@ -23,17 +21,14 @@
         <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
     </bean>
 
-    <!-- ======================================== 配置MyBatis自动扫描SQL映射文件  ========================================= -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"><!--使用mapper的扫描器自动扫描mapper接口在spring中进行注册 -->
         <property name="basePackage" value="com.lqf.dao"></property>  <!-- basePackage指的是mapper所对应的接口的包名 -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
-    <!-- ========================================配置事务管理========================================= -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="ds" />
     </bean>
-    <!-- 让事务支持注解 (使用声明式事务)-->
     <tx:annotation-driven transaction-manager="txManager" />
 
 </beans>
